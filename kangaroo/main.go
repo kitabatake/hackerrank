@@ -37,14 +37,13 @@ func judge(faster kangaroo, slower kangaroo) bool {
 	return false
 }
 
-func inputProcess() (kangaroo, kangaroo) {
+func inputProcess() (faster, slower kangaroo) {
 	var x1, x2, v1, v2 int
 	fmt.Scanf("%d", &x1)
 	fmt.Scanf("%d", &v1)
 	fmt.Scanf("%d", &x2)
 	fmt.Scanf("%d", &v2)
 
-	var faster, slower kangaroo
 	if v1 > v2 {
 		faster = kangaroo{x: x1, v: v1}
 		slower = kangaroo{x: x2, v: v2}
@@ -52,5 +51,5 @@ func inputProcess() (kangaroo, kangaroo) {
 		faster = kangaroo{x: x2, v: v2}
 		slower = kangaroo{x: x1, v: v1}
 	}
-	return faster, slower
+	return
 }
