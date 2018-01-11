@@ -17,34 +17,27 @@ type Child struct {
 	index int
 }
 
-type Children []Child
+type ByRating []Child
+func (a ByRating) Len() int { return len(a) }
+func (a ByRating) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a ByRating) Less(i, j int) bool { return a[i].rating < a[j].rating }
 
-func (c Children) Len() int {
-	return len(c)
-}
-
-func (c Children) Swap(i, j int) {
-	c[i], c[j] = c[j], c[i]
-}
-
-func (c Children) Less(i, j int) bool {
-	return c[i].rating < c[j].rating
-}
 
 func main() {
 	fmt.Scanf("%d", &N)
-	children := make(Children, N)
-	sortedChildren := make(Children, N)
+	children := make([]Child, N)
 	var rating int
 	for i := 0; i < N; i++ {
 		fmt.Scanf("%d", &rating)
 		children[i] = Child{rating: rating, index: i}
-		sortedChildren[i] = Child{rating: rating, index: i}
 	}
 
-	sort.Sort(sortedChildren)
+	byRating := make(ByRating, N)
+	copy(byRating, children)
+	sort.Sort(byRating)
 	ans := 0
-	for _, child := range sortedChildren {
+
+	for _, child := range byRating {
 		children[child.index].candyNum = calcCandyNum(children, child.index)
 		ans += children[child.index].candyNum
 	}
@@ -53,7 +46,7 @@ func main() {
 
 // 隣接した子供が既にキャンディが配られている場合、ratingから配るキャンディ数を決定する
 // ratingが低い子供から呼び出される前提。
-func calcCandyNum(children Children, index int) int {
+func calcCandyNum(children []Child, index int) int {
 	dis := []int {-1, 1}
 	ret := 1
 	for _, di := range dis {
